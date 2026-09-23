@@ -71,7 +71,7 @@
 <header><div><b>CLAIM-READY</b> / SYNTHETIC BRAIN</div><div class="tag">WORKING BETA - SYNTHETIC DATA ONLY</div></header>
 
 <h1>Cameras see frames.<br>This grades what <span class="b">happened across time.</span></h1>
-<p class="sub">4D security for campuses, hospitals, restaurants, retail floors, hotels, bars - any insured venue. The engine follows every entity across time: who moved, where, in what sequence, how behavior changed - and grades whether that sequence is a security incident, against a 100,000-incident synthetic corpus. Out comes a signed, claim-ready record. Pixels never leave the site; only metadata travels.</p>
+<p class="sub">This synthetic working beta follows generated entities across time, compares each sequence with a generated incident corpus, and exports a signed replay record. The browser demo uses metadata only. It does not determine fault, causation, liability, coverage or legal significance.</p>
 
 <h2>01 - The cohort</h2>
 <div class="ctl" id="scales" style="margin:0 0 14px">
@@ -108,7 +108,7 @@
     <option value="safety">Safety breach (vehicle zone)</option>
     <option value="altercation">Customer altercation (liquor liability)</option>
   </select>
-  <p class="starthere">START HERE - pick an incident type, press Generate + grade. The signed record lands in seconds.</p>
+  <p class="starthere">START HERE - pick an incident type, press Generate + grade. A signed synthetic replay record is generated in seconds.</p>
   <button class="run" id="go" onclick="runIncident()">Generate + grade</button>
   <span class="mono" id="status"></span>
 </div>
@@ -129,7 +129,7 @@
     <div class="rowline"><span>Claim status</span><span style="color:#34d399">READY FOR REVIEW - no field visit required</span></div>
     <div class="rowline"><span>Claim opened</span><span id="adjDate"></span></div>
     <div class="rowline"><span>Record integrity</span><span class="mono">hash-verified, audit ledger entry written</span></div>
-    <div class="rowline"><span>Investigation cycle</span><span>4 minutes - industry average 3-6 weeks</span></div>
+    <div class="rowline"><span>Fictional browser runtime</span><span>about 4 minutes - not a production benchmark</span></div>
     <div class="rowline"><span>Reserve recommendation</span><span id="adjReserve"></span></div>
     <div class="rowline" style="border-bottom:0"><span>Next action</span><span>approve reserve, request escrowed clip if eyes needed</span></div>
   </div>
@@ -177,14 +177,14 @@
 <div class="grid">
   <div class="card"><h3>Pixels stay. Meaning travels.</h3><p>The site agent runs detection and tracking on the existing NVR/VMS server or a small edge box. What crosses is anonymous event metadata - kilobytes an hour, not gigabytes of video. Footage stays on-site; no inbound port or centralized video store.</p></div>
   <div class="card"><h3>The corpus is invented.</h3><p>Real incident footage is rare and legally radioactive. The generator writes millions of labeled incidents - slips, thefts, intrusions - and the grader pre-trains on those. It ships already knowing what a liability-relevant event looks like.</p></div>
-  <div class="card"><h3>Records, not dashboards.</h3><p>Every grade lands as a signed, claim-ready incident record: what happened, whose liability, what it costs, evidence by pointer. Built for the CFO and the insurer - GL, liquor liability, property - where the budget already exists.</p></div>
+  <div class="card"><h3>Records, not dashboards.</h3><p>Every synthetic comparison lands as a signed replay record: observed sequence, synthetic class, source pointer, unavailable channels and stated limits. Human reviewers decide claim meaning.</p></div>
 </div>
 
 <h2>06 - Why venues buy it</h2>
 <div class="grid">
   <div class="card"><h3>Coverage without headcount.</h3><p>Every camera becomes a watcher that never blinks. Incidents get caught, graded, and written up while your team keeps working - no control room, no review shifts, no footage queue.</p></div>
   <div class="card"><h3>Time is the evidence.</h3><p>The 4D track is what separates a real fall from a staged claim: where the person was, how fast they moved, what changed in the seconds before the event. Every record carries the full trajectory, not a single frame.</p></div>
-  <div class="card"><h3>The claim file lands first.</h3><p>Every incident ships as a signed, auditable record - what happened, the grade, the evidence pointer, the cost band. It reaches the CFO and the insurer while the other side is still requesting footage.</p></div>
+  <div class="card"><h3>The evidence record is reviewable.</h3><p>Each fictional incident produces a signed replay record with the generated sequence, synthetic comparison and evidence pointer. It does not mean a claim is processed or complete.</p></div>
 </div>
 
 <footer>CLAIM-READY - working beta. All sites, events, and incidents on this page are synthetic - no real footage anywhere. The shipped site agent (site-agent/) runs the same gating and ingest contract against live ONVIF/RTSP cameras.</footer>
@@ -232,25 +232,25 @@ nEv.textContent=totalEvents.toLocaleString();
 const T={
  slip:{name:'Slip-and-fall',sev:'MODERATE',cost:'$18,400 - $41,000',
   ev:[['14:02:03','person P-117 enters north hallway, pace 1.4 m/s'],['14:02:11','P-117 velocity drops to 0 in 0.3s - deceleration anomaly'],['14:02:11','P-117 centroid falls 1.1m vertical, stays low'],['14:02:19','P-117 stationary 8s, dwell alert'],['14:02:24','second person P-118 approaches, assists'],['14:02:31','P-117 upright, limp gait 0.5 m/s toward reception']],
-  brain:'Fall signature: hard deceleration + vertical drop + 8s floor dwell matches synthetic slip class 0.94. No wet-floor signage event detected in zone in prior 4h. Cleaning cart logged in zone at 13:41 - 21 min before incident. Liability relevance: HIGH.',
-  rec:[['Incident','Slip-and-fall, north hallway, camera 3'],['Site','SITE-041 - Community hospital'],['Window','14:02:11 - 14:02:31 (20 seconds)'],['Liability read','Likely premises liability - maintenance cart in zone 21 min prior, no signage event'],['Cost estimate','$18,400 - $41,000 (synthetic claim band)'],['Evidence','Event stream hash 0x8f3a...c21d; clip pointer: cam 3, 14:01:58 - 14:02:40 (on-site NVR, escrow on request)'],['Confidence','0.94 - synthetic slip class']]},
+  brain:'Fall signature: hard deceleration + vertical drop + 8s floor dwell matches synthetic slip class 0.94. No wet-floor signage event detected in zone in prior 4h. Cleaning cart logged in zone at 13:41 - 21 min before incident. Review flag: HIGH in this fictional taxonomy; no liability conclusion.',
+  rec:[['Incident','Slip-and-fall, north hallway, camera 3'],['Site','SITE-041 - Community hospital'],['Window','14:02:11 - 14:02:31 (20 seconds)'],['Review boundary','Generated stream shows a maintenance-cart event 21 min earlier and no signage event; liability is not determined'],['Cost estimate','$18,400 - $41,000 (synthetic claim band)'],['Evidence','Event stream hash 0x8f3a...c21d; clip pointer: cam 3, 14:01:58 - 14:02:40 (on-site NVR, escrow on request)'],['Confidence','0.94 - synthetic slip class']]},
  theft:{name:'Theft',sev:'LOW-MODERATE',cost:'$2,100 - $6,800',
   ev:[['09:14:47','person P-203 enters supply room, badge none (tailgate)'],['09:15:02','P-203 dwell at shelf C, handling events x4'],['09:15:19','object O-88 (laptop) leaves shelf, associates to P-203'],['09:15:41','P-203 exits via stairwell 2, pace 1.9 m/s'],['09:15:52','O-88 not returned to inventory grid']],
-  brain:'Removal pattern matches synthetic theft class 0.91: unbadged entry, handling burst, object association, fast egress through low-camera route. Liability relevance: MODERATE - property claim, not premises.',
-  rec:[['Incident','Theft - laptop, supply room, camera 6'],['Site','SITE-077 - Corporate HQ'],['Window','09:14:47 - 09:15:52 (65 seconds)'],['Liability read','Property loss; tailgating gap at supply door is the control failure'],['Cost estimate','$2,100 - $6,800 (synthetic claim band)'],['Evidence','Event stream hash 0x71be...9aa0; clip pointer: cam 6, 09:14:40 - 09:16:05 (on-site NVR, escrow on request)'],['Confidence','0.91 - synthetic theft class']]},
+  brain:'Removal pattern matches synthetic theft class 0.91: unbadged entry, handling burst, object association, fast egress through low-camera route. Review flag: MODERATE in this fictional taxonomy; no claim-type or liability conclusion.',
+  rec:[['Incident','Theft - laptop, supply room, camera 6'],['Site','SITE-077 - Corporate HQ'],['Window','09:14:47 - 09:15:52 (65 seconds)'],['Review boundary','Generated stream shows a tailgating event at the supply door; claim type and control failure are not determined'],['Cost estimate','$2,100 - $6,800 (synthetic claim band)'],['Evidence','Event stream hash 0x71be...9aa0; clip pointer: cam 6, 09:14:40 - 09:16:05 (on-site NVR, escrow on request)'],['Confidence','0.91 - synthetic theft class']]},
  intrusion:{name:'After-hours intrusion',sev:'HIGH',cost:'$12,000 - $55,000',
   ev:[['02:41:08','perimeter sensor: motion at fence line SE'],['02:41:39','person P-900 crosses lot B, no badge, no vehicle'],['02:42:12','P-900 at loading dock door, handle events x3'],['02:42:30','door contact opens - forced-entry signature'],['02:43:04','P-900 inside, dwell in records area'],['02:44:57','alarm event; P-900 egress same route']],
-  brain:'Night intrusion matches synthetic breach class 0.96: perimeter approach, forced door signature, targeted dwell (records area), 3m49s total. Guard patrol last passed 02:19 - 22 min gap. Liability relevance: HIGH - security negligence exposure.',
-  rec:[['Incident','After-hours intrusion, loading dock, camera 9'],['Site','SITE-058 - Distribution center'],['Window','02:41:08 - 02:44:57 (3m49s)'],['Liability read','Security negligence exposure - 22 min patrol gap, forced dock door'],['Cost estimate','$12,000 - $55,000 (synthetic claim band)'],['Evidence','Event stream hash 0xd204...77f1; clip pointer: cam 9, 02:40:55 - 02:45:10 (on-site NVR, escrow on request)'],['Confidence','0.96 - synthetic breach class']]},
+  brain:'Night intrusion matches synthetic breach class 0.96: perimeter approach, forced door signature, targeted dwell (records area), 3m49s total. Guard patrol last passed 02:19 - 22 min gap. Review flag: HIGH in this fictional taxonomy; no negligence or liability conclusion.',
+  rec:[['Incident','After-hours intrusion, loading dock, camera 9'],['Site','SITE-058 - Distribution center'],['Window','02:41:08 - 02:44:57 (3m49s)'],['Review boundary','Generated stream shows a 22 min patrol gap and forced-door event; negligence and liability are not determined'],['Cost estimate','$12,000 - $55,000 (synthetic claim band)'],['Evidence','Event stream hash 0xd204...77f1; clip pointer: cam 9, 02:40:55 - 02:45:10 (on-site NVR, escrow on request)'],['Confidence','0.96 - synthetic breach class']]},
 
  altercation:{name:'Customer altercation',sev:'HIGH',cost:'$25,000 - $150,000',
   ev:[['23:17:42','patrons P-511, P-512 dwell at bar, service events x6 over 92 min'],['23:18:05','P-511 posture change - aggressive stance signature, arm raise'],['23:18:09','P-511 to P-512 contact event - shove'],['23:18:11','P-512 falls, centroid drop, strikes stool'],['23:18:14','staff S-3 approaches, intervention 5s after first contact'],['23:18:40','P-512 upright, assisted to exit; P-511 removed by door staff']],
-  brain:'Altercation matches synthetic assault class 0.92. Overserve pattern: 6 service events in 92 min before the incident - the liquor liability exposure is in the pour log correlation. Staff response 5s from first contact - adequate. Liability relevance: HIGH - liquor liability plus premises.',
-  rec:[['Incident','Customer altercation, main bar, camera 2'],['Site','SITE-090 - Bar & venue'],['Window','23:18:05 - 23:18:40 (35 seconds)'],['Liability read','Liquor liability exposure - 6 pours in 92 min preceding incident; staff response adequate (5s)'],['Cost estimate','$25,000 - $150,000 (synthetic claim band)'],['Evidence','Event stream hash 0xa911...4c7e; clip pointer: cam 2, 23:17:30 - 23:19:00 (on-site NVR, escrow on request)'],['Confidence','0.92 - synthetic assault class']]},
+  brain:'Altercation matches synthetic assault class 0.92. Overserve pattern: 6 service events in 92 min before the incident - the pour-log correlation is flagged for review. Staff response is 5s from first contact; adequacy is not determined. Review flag: HIGH in this fictional taxonomy; no liquor-liability or premises-liability conclusion.',
+  rec:[['Incident','Customer altercation, main bar, camera 2'],['Site','SITE-090 - Bar & venue'],['Window','23:18:05 - 23:18:40 (35 seconds)'],['Review boundary','Generated stream shows 6 service events in 92 min and a 5s staff response; adequacy and liability are not determined'],['Cost estimate','$25,000 - $150,000 (synthetic claim band)'],['Evidence','Event stream hash 0xa911...4c7e; clip pointer: cam 2, 23:17:30 - 23:19:00 (on-site NVR, escrow on request)'],['Confidence','0.92 - synthetic assault class']]},
  safety:{name:'Safety breach (vehicle zone)',sev:'HIGH',cost:'$34,000 - $120,000',
   ev:[['11:22:15','forklift F-2 active in loading dock, speed 9 km/h'],['11:22:31','person P-340 enters vehicle zone on foot'],['11:22:33','F-2 to P-340 distance 2.1m and closing'],['11:22:34','proximity violation event - under 1.5m'],['11:22:35','F-2 emergency stop, decel -4.2 m/s2'],['11:22:36','P-340 clear, no contact - near miss']],
-  brain:'Near-miss matches synthetic vehicle-zone class 0.93: pedestrian in active forklift lane, sub-1.5m proximity, emergency stop. No spotter event logged. OSHA-reportable pattern if contact. Liability relevance: HIGH - safety program exposure.',
-  rec:[['Incident','Near-miss, pedestrian in vehicle zone, camera 5'],['Site','SITE-058 - Distribution center'],['Window','11:22:31 - 11:22:36 (5 seconds)'],['Liability read','Safety-program exposure - no spotter, pedestrian route crosses live lane'],['Cost estimate','$34,000 - $120,000 had contact occurred (synthetic band)'],['Evidence','Event stream hash 0x5c19...03ee; clip pointer: cam 5, 11:22:10 - 11:22:45 (on-site NVR, escrow on request)'],['Confidence','0.93 - synthetic vehicle-zone class']]}
+  brain:'Near-miss matches synthetic vehicle-zone class 0.93: pedestrian in active forklift lane, sub-1.5m proximity, emergency stop. No spotter event logged. Fictional near-miss pattern; reportability is not determined. Review flag: HIGH in this fictional taxonomy.',
+  rec:[['Incident','Near-miss, pedestrian in vehicle zone, camera 5'],['Site','SITE-058 - Distribution center'],['Window','11:22:31 - 11:22:36 (5 seconds)'],['Review boundary','Generated stream shows no spotter event and a pedestrian route crossing the modeled lane; reportability and liability are not determined'],['Cost estimate','$34,000 - $120,000 had contact occurred (synthetic band)'],['Evidence','Event stream hash 0x5c19...03ee; clip pointer: cam 5, 11:22:10 - 11:22:45 (on-site NVR, escrow on request)'],['Confidence','0.93 - synthetic vehicle-zone class']]}
 };
 
 function runIncident(){
@@ -299,7 +299,7 @@ async function exportRec(){
   const rows={};document.querySelectorAll('#record tr').forEach(tr=>{const c=tr.cells;if(c.length===2)rows[c[0].textContent.trim()]=c[1].textContent.trim().replace(/\s+/g,' ');});
   if(!Object.keys(rows).length)return;
   const events=[...document.querySelectorAll('#events .evrow')].map(e=>e.textContent.trim().replace(/\s+/g,' '));
-  const rec={record_type:'claim-ready outcome record',format_version:'1.0',
+  const rec={record_type:'signed synthetic replay record',format_version:'1.0',
     source:'Claim-ready - insured venues',
     generated_at:new Date().toISOString(),
     incident:rows,event_stream:events,
@@ -381,7 +381,7 @@ async function exportRec(){
         gtext='Zone not mappable to corpus zones - whole-corpus modal: '+mType[0].replace(/_/g,' ')+'. Add a zone column with named zones for matched grading.';
       }
       rows[rows.length-1][1]=gtext;
-      grading={reference:{derived_from_scale:ref.derived_from_scale,corpus_hash:ref.corpus_hash,grader_accuracy:ref.grader_accuracy},cell:gradingCell,basis:'synthetic cohort - pre-trained grader, not yet court-grade'};
+      grading={reference:{derived_from_scale:ref.derived_from_scale,corpus_hash:ref.corpus_hash,grader_accuracy:ref.grader_accuracy},cell:gradingCell,basis:'synthetic reference corpus; format comparison only, not a fault, causation, liability or legal conclusion'};
     }catch(e){rows[rows.length-1][1]='corpus fetch failed - extraction-only record';}
     vrect.innerHTML=rows.map(r=>'<tr><td>'+r[0]+'</td><td class="mono">'+r[1]+'</td></tr>').join('');
     vrec.style.display='block';
