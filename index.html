@@ -324,47 +324,11 @@ async function exportRec(){
   drop.ondragover=e=>{e.preventDefault();};
   drop.ondrop=e=>{e.preventDefault();if(e.dataTransfer.files.length)vhandle(e.dataTransfer.files[0]);};
   upl.onchange=()=>{if(upl.files.length)vhandle(upl.files[0]);};
-  function parseCSV(text){
-    const lines=text.split(/\r?\n/).filter(l=>l.trim());
-    if(lines.length<4)return null;
-    const hdr=lines[0].toLowerCase().split(',').map(x=>x.trim());
-    const find=(...ns)=>{for(const n of ns){const i=hdr.findIndex(h=>h.includes(n));if(i>=0)return i;}return -1;};
-    const iT=find('time','ts'),iE=find('entity','actor','person','object'),iZ=find('zone','area','loc'),iS=find('speed','vel');
-    if(iT<0||iS<0)return null;
-    const T=[],E=[],Z=[],S=[];
-    const t0v=parseFloat(lines[1].split(',')[iT]);
-    for(let i=1;i<lines.length;i++){
-      const c=lines[i].split(',');const t=parseFloat(c[iT]),sp=parseFloat(c[iS]);
-      if(isNaN(t)||isNaN(sp))continue;
-      T.push(isNaN(t0v)||t0v>1e6?t-t0v:t);S.push(sp);
-      E.push(iE>=0?(c[iE]||'').trim():'entity');Z.push(iZ>=0?(c[iZ]||'').trim():'');
-    }
-    if(T.length<4)return null;
-    return {T,E,Z,S,n:T.length,duration:T[T.length-1]-T[0]};
-  }
-  function parseAgentJSON(text){
-    const byEnt={};
-    for(const ln of text.split(/\r?\n/)){
-      const t=ln.trim();if(!t)continue;
-      let o;try{o=JSON.parse(t);}catch(e){return null;}
-      const ts=+o.ts,vel=+(o.vel!==undefined?o.vel:o.speed);
-      if(isNaN(ts)||isNaN(vel))return null;
-      const k=o.entity||'entity';
-      (byEnt[k]=byEnt[k]||[]).push({t:ts,z:(o.zone||''),s:vel});
-    }
-    const ids=Object.keys(byEnt);
-    if(!ids.length)return null;
-    let bestId=ids[0],bestDrop=0;
-    for(const id of ids){
-      const a=byEnt[id];a.sort((p,q)=>p.t-q.t);
-      let pk=0;
-      for(const e of a){const d=pk-e.s;if(d>bestDrop){bestDrop=d;bestId=id;}pk=Math.max(pk*0.98,e.s);}
-    }
-    const a=byEnt[bestId];
-    if(a.length<4)return null;
-    const t0=a[0].t;
-    return {T:a.map(e=>e.t-t0),E:a.map(()=>bestId),Z:a.map(e=>e.z),S:a.map(e=>e.s),n:a.length,duration:a[a.length-1].t-t0,entities:ids.length,picked:bestId};
-  }
+  function parseCsvRows(text){const out=[];let row=[],v='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'&&text[i+1]==='"'){v+='"';i++;}else if(c==='"')q=false;else v+=c;}else if(c==='"')q=true;else if(c===','){row.push(v);v='';}else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(v);if(row.some(x=>x.trim()))out.push(row);row=[];v='';}else v+=c;}row.push(v);if(row.some(x=>x.trim()))out.push(row);return out;}
+
+  function finishTracks(byEnt,sourceType){const ids=Object.keys(byEnt);if(!ids.length)return null;for(const id of ids){for(let i=1;i<byEnt[id].length;i++)if(byEnt[id][i].t<=byEnt[id][i-1].t)return null;}let bestId=ids[0],bestDrop=0;for(const id of ids){let pk=0;for(const e of byEnt[id]){const d=pk-e.s;if(d>bestDrop){bestDrop=d;bestId=id;}pk=Math.max(pk*.98,e.s);}}const x=byEnt[bestId];if(x.length<4)return null;const t0=x[0].t,d=x[x.length-1].t-t0;if(!Number.isFinite(d)||d<=0||d>86400)return null;return {T:x.map(e=>e.t-t0),E:x.map(()=>bestId),Z:x.map(e=>e.z),S:x.map(e=>e.s),n:x.length,duration:d,entities:ids.length,picked:bestId,source_type:sourceType,speed_unit:'m/s',unavailable_channels:[]};}
+  function parseCSV(text){const rows=parseCsvRows(text);if(rows.length<4)return null;const h=rows[0].map(x=>x.trim().toLowerCase()),idx=(...ns)=>h.findIndex(x=>ns.includes(x));const it=idx('time','timestamp','ts'),ie=idx('entity','actor','person','object'),iz=idx('zone','area','location'),is=idx('speed_m_s','velocity_m_s','vel_m_s');if(it<0||ie<0||iz<0||is<0)return null;const by={};for(const c of rows.slice(1)){const t=Number(c[it]),sp=Number(c[is]),id=(c[ie]||'').trim(),z=(c[iz]||'').trim();if(Number.isFinite(t)&&Number.isFinite(sp)&&id&&z)(by[id]=by[id]||[]).push({t,s:sp,z});}return finishTracks(by,'venue_event_csv');}
+  function parseAgentJSON(text){const by={};for(const ln of text.split(/\r?\n/)){if(!ln.trim())continue;let o;try{o=JSON.parse(ln)}catch(e){return null}const t=Number(o.ts),sp=Number(o.vel!==undefined?o.vel:o.speed),id=String(o.entity||''),z=String(o.zone||'');if(!Number.isFinite(t)||!Number.isFinite(sp)||!id||!z||o.speed_unit!=='m/s')return null;(by[id]=by[id]||[]).push({t,s:sp,z});}return finishTracks(by,'site_agent_jsonl');}
   async function vhandle(f){
     log.innerHTML='';vrec.style.display='none';vRecord=null;
     const buf=await f.arrayBuffer();
@@ -392,7 +356,8 @@ async function exportRec(){
     if(sudden)best={i,decel:(vB-vA)/Math.max(0.01,T[i]-T[i-1])};
     const rows=[
       ['Record id','REAL-V-'+h.slice(0,12)],
-      ['Source','User-supplied file - hashed locally, never uploaded'],
+      ['Source','User-supplied '+csv.source_type+' - hashed locally, never uploaded'],
+      ['Units','speed m/s; unavailable channels: '+(csv.unavailable_channels.join(', ')||'none declared')],
       ['Input',f.name+' ('+f.size+' B, sha256 '+h.slice(0,12)+'...)'],
       ['Stream',csv.n+' structured events over '+csv.duration.toFixed(1)+'s across '+zones.size+' zones'],
       ['Detected event',(sudden?'Sudden-stop / fall candidate':'Peak deceleration event')+' at t='+tEv.toFixed(2)+'s: '+entEv+' in '+(zoneEv||'unzoned area')+', '+vB.toFixed(1)+' -> '+vA.toFixed(1)+' m/s ('+best.decel.toFixed(1)+' m/s2)'],
@@ -420,7 +385,7 @@ async function exportRec(){
     }catch(e){rows[rows.length-1][1]='corpus fetch failed - extraction-only record';}
     vrect.innerHTML=rows.map(r=>'<tr><td>'+r[0]+'</td><td class="mono">'+r[1]+'</td></tr>').join('');
     vrec.style.display='block';
-    vRecord={record_type:'claim-ready incident record - user-supplied extraction (v0)',generated_at:new Date().toISOString(),input:{name:f.name,bytes:f.size,sha256:h},stream:{events:csv.n,duration_s:csv.duration,zones:[...zones]},event:{t_s:tEv,entity:entEv,zone:zoneEv,speed_before:vB,speed_after:vA,decel_m_s2:best.decel,classification:sudden?'sudden-stop / fall candidate':'peak deceleration event'},grading:grading,signature:{algorithm:'SHA-256 over record body'}};
+    vRecord={record_type:'claim-ready incident record - user-supplied extraction (v0)',generated_at:new Date().toISOString(),input:{name:f.name,bytes:f.size,sha256:h},stream:{events:csv.n,duration_s:csv.duration,zones:[...zones],source_type:csv.source_type,speed_unit:csv.speed_unit,unavailable_channels:csv.unavailable_channels},event:{t_s:tEv,entity:entEv,zone:zoneEv,speed_before:vB,speed_after:vA,decel_m_s2:best.decel,classification:sudden?'sudden-stop / fall candidate':'peak deceleration event'},grading:grading,signature:{algorithm:'SHA-256 over record body'}};
   }
   document.getElementById('vExport').onclick=async function(){
     if(!vRecord)return;
@@ -633,5 +598,6 @@ async function exportRec(){
   };
 })();
 </script>
+<footer>Copyright Placid Lake LLC 2026</footer>
 </body>
 </html>
